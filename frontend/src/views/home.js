@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import {Input  ,Carousel, Button} from 'antd'
+import {Input  ,Carousel} from 'antd'
 import HeaderWrap from './../components/HeaderWrap';
 import HomeList from './../containers/HomeList'
 import StoryList from './../containers/StoryList'
 const Search = Input.Search;
 export default class Home extends Component {
+      state={
+        loading:true
+      }
        render(){
         return ( 
             <div>
@@ -27,7 +30,6 @@ export default class Home extends Component {
             <p className="item-subtitle">莫愁前路无知己，天下谁人不识君</p>
             <ul className="home-list">
               <HomeList list={[1,2,3,4,5,6,7,8]}/>
-                
             </ul>
             <p className="item-title">精彩旅行故事</p>
             <p className="item-subtitle">我有故事，你有酒吗？</p>

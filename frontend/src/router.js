@@ -6,7 +6,7 @@ const AppRouter = () => (
        <Router>
        <span>
           <Route  path="/index/:status(login|register)"  component={Index} />
-          <Route path="/" component={Home}/>
+          <Route path="/"  exact component={Home}/>
        </span>
     </Router>  );
   

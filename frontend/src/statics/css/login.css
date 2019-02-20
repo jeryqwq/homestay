@@ -48,5 +48,6 @@ a.login-form-trip{
  }
  .banner-item img{
    width: 100%;
+   min-height: 100vh;
    height: 100vh;
 }

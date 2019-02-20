@@ -62,7 +62,7 @@ class Header extends React.Component{
             <div >
             <Avatar   icon="user"  />
             {"欢迎您，用户"+userState.user.name}
-            </div></Dropdown>:<Link className="userInfo" to='/index/login'>请登录</Link>}
+            </div></Dropdown>:<span><Link className="userInfo" to='/index/register'>注册</Link><Link className="userInfo" to='/index/login'>登录</Link></span>}
             <Menu
             onClick={(e)=>{
             this.setState({

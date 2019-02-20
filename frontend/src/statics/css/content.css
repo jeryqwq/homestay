@@ -1,23 +1,23 @@
 .head-title{
     margin-left: 20px;
     float: left;
-    color: black;
+    color: white;
     font-size: 30px;
+    
 }
 .head-title span{
     font-size: 25px;
     margin: 0 30px;
 }
 .userInfo{
-    position: absolute;
-    right: 0;
+   float: right;
     line-height: 45px;
     margin: 0 20px;
     color: white;
 
 }
 .ant-menu-dark, .ant-menu-dark .ant-menu-sub{
-    background: rgba(255,255,255,.2);
+    background: rgba(0,0,0,.3);
 }
 .fixed-title{
     position: fixed;
@@ -25,12 +25,13 @@
     width: 100%;
     color: white;
     z-index: 3;
+  
 }
 .ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected{
     background: transparent;
     border-bottom: solid 3px #1890ff;
 }
-.ant-carousel .slick-initialized .slick-slide{
+.banner-wrap .ant-carousel .slick-initialized .slick-slide{
     height: 80vh;
 }
 .banner-wrap .banner-item{
@@ -84,13 +85,21 @@
     top: 0;
     right:100%;
     background: #5ff7d2;
-    opacity: .3;
+    opacity: .7;
 }
 .home-list li:hover>.item-wrap{
     right:0;
 }
+.home-list li:hover{
+    box-shadow: 5px 5px 5px rgb(190, 188, 188);
+    border: solid 1px #dddddd;
+}
 .home-list li:hover>.item-info{
     top:250px;
+}
+img.img-item{
+    width: 100%;
+    height: 320px;
 }
 .item-wrap span{
     display: inline-block;
