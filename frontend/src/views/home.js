@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {Input  ,Carousel} from 'antd'
+import {Input  ,Carousel,Radio, Row, Col} from 'antd'
 import HeaderWrap from './../components/HeaderWrap';
 import HomeList from './../containers/HomeList'
 import StoryList from './../containers/StoryList'
+
 const Search = Input.Search;
 export default class Home extends Component {
       state={
@@ -36,6 +37,28 @@ export default class Home extends Component {
             <ul className="home-list">
               <StoryList list={[1,2,3,4,5,6,7,8]}/>
             </ul>
+            <div className="btn-wrap">
+              <p className="item-title">热门旅行城市</p>
+              <div className="radio-group">
+                <Radio.Group defaultValue="a" size='large' buttonStyle="solid">
+                  <Radio.Button value="a">杭州</Radio.Button>
+                  <Radio.Button value="b">上海</Radio.Button>
+                  <Radio.Button value="c">福建</Radio.Button>
+                  <Radio.Button value="d">广州</Radio.Button>
+                  <Radio.Button value="f">深圳</Radio.Button>
+                  <Radio.Button value="g">云南</Radio.Button>
+                  <Radio.Button value="h">广西</Radio.Button>
+                  <Radio.Button value="i">湖南</Radio.Button>
+                  <Radio.Button value="j">湖北</Radio.Button>
+                </Radio.Group>
+              </div>
+            </div>
+            <ul className="home-list">
+              <HomeList list={[1,2,3,4,5,6,7,8]}/>
+              </ul>
+              <div className="footer"  >
+                
+              </div>
         </div>)}  
             </div>
          )

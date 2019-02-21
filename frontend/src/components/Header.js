@@ -69,14 +69,13 @@ class Header extends React.Component{
             current: e.key,
             });}}
             theme="dark"
-            selectedKeys={[this.state.current]}
             mode="horizontal"
              >
             <Menu.Item   >
-                <Icon type="home" /><Link style={{display:'inline'}} to="/MainPage">阿浪民宿</Link>
+                <Icon type="home" /><Link style={{display:'inline'}} to="/">阿浪民宿</Link>
             </Menu.Item>
             <Menu.Item  >
-            <Icon type="exception" /><Link style={{display:'inline'}} to="/CartInfo">房源</Link>
+            <Icon type="exception" /><Link style={{display:'inline'}} to="/HomeSearch">房源</Link>
             </Menu.Item>
             <Menu.Item  >
             <Icon type="search" /><Link style={{display:'inline'}} to="/Search">故事</Link>
