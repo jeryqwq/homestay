@@ -1,6 +1,9 @@
 import React from 'react';
-import {Select,Input,Radio} from 'antd';
+import {Select,Input,Radio,InputNumber,Pagination,DatePicker} from 'antd';
 import  HeaderWrap from './../components/HeaderWrap' 
+import HomeList from './../containers/HomeList'
+import moment from 'moment';
+
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
@@ -10,6 +13,9 @@ class HomeSearch extends React.Component {
         this.state = {  }
     }
     render() { 
+        function disabledDate(current) {
+            return current && current < moment().endOf('day');
+          }
         return ( 
             HeaderWrap(()=><div style={searchWrap}>
             <Select onChange={(val)=>{
@@ -34,8 +40,15 @@ class HomeSearch extends React.Component {
                     this.getCarts()
                 }}
                 style={{width:200,marginLeft:50}} placeholder="请输入关键词" />
-              <div style={{height:50,margin:"25px 0  0 50%"}}>
-              <span style={{marginRight:20}}>地区:</span><Select onChange={(val)=>{
+              <div style={{height:50,margin:"25px 0  0 20%"}}>
+              <span style={{margin:"0 20px"}}>开始日期:</span><DatePicker 
+              disabledDate={disabledDate}
+              onChange={(val)=>{}} placeholder="请选择开始时间" />
+              <span style={{margin:"0 20px"}}>结束日期:</span><DatePicker 
+              disabledDate={disabledDate}
+              onChange={()=>{}}  placeholder="请选择结束时间" />
+              <span style={{margin:"0 20px"}}>人数:</span><InputNumber min={1} max={50} defaultValue={1} onChange={()=>{}} />
+              <span style={{margin:"0 20px"}}>地区:</span><Select onChange={(val)=>{
                this.setState({
                    key:val.key
                })
@@ -54,7 +67,13 @@ class HomeSearch extends React.Component {
                 <Radio value={'price'}>价格</Radio>
             </RadioGroup>
             </div>
-        </div>)
+           
+         <ul className="home-list">
+              <HomeList list={[1,2,3,4,5,6,7,8]}/>
+            </ul>
+            <Pagination  onChange={(val)=>{console.log(val)}} defaultCurrent={1} total={500} />,
+
+        </div>,'item_1')
          );
     }
 }

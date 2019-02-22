@@ -12,7 +12,6 @@ class Header extends React.Component{
     constructor(props){
         super(props);
             this.state = {
-                current: this.props.current?this.props.current:'item_0',
                 visible: false
               }
     }
@@ -38,7 +37,8 @@ class Header extends React.Component{
     render(){
        
         const menu = (
-            <Menu>
+            <Menu   
+                selectedKeys={[this.props.current]}>
               <Menu.Item>
                 <Icon type="user" />用户:{userState.user.name}
               </Menu.Item>
@@ -64,29 +64,26 @@ class Header extends React.Component{
             {"欢迎您，用户"+userState.user.name}
             </div></Dropdown>:<span><Link className="userInfo" to='/index/register'>注册</Link><Link className="userInfo" to='/index/login'>登录</Link></span>}
             <Menu
-            onClick={(e)=>{
-            this.setState({
-            current: e.key,
-            });}}
+            selectedKeys={[this.props.current]}
             theme="dark"
             mode="horizontal"
              >
             <Menu.Item   >
-                <Icon type="home" /><Link style={{display:'inline'}} to="/">阿浪民宿</Link>
+            <Icon type="shop" theme="twoTone" /><Link style={{display:'inline'}} to="/">阿浪民宿</Link>
             </Menu.Item>
             <Menu.Item  >
-            <Icon type="exception" /><Link style={{display:'inline'}} to="/HomeSearch">房源</Link>
+            <Icon type="bank" theme="twoTone" /><Link style={{display:'inline'}} to="/HomeSearch">房源</Link>
             </Menu.Item>
             <Menu.Item  >
-            <Icon type="search" /><Link style={{display:'inline'}} to="/Search">故事</Link>
+            <Icon type="camera" theme="twoTone" /><Link style={{display:'inline'}} to="/StorySearch">旅行故事</Link>
             </Menu.Item>
             <Menu.Item  >
-            <Icon type="schedule" /><Link style={{display:'inline'}} to="/Status">我的预约</Link>
+            <Icon type="profile" theme="twoTone" /><Link style={{display:'inline'}} to="/MyStatus">我预订的民宿</Link>
             </Menu.Item>
             {
               userState.user.isAdmin===1?<Menu.Item >
-             <Icon type="lock" /><Link style={{display:'inline'}} to="/BackEnd">后台管理</Link>
-              </Menu.Item>:undefined
+             <Icon type="unlock" theme="twoTone" /><Link style={{display:'inline'}} to="/BackEnd">后台管理</Link>
+              </Menu.Item>:<Menu.Item  onClick={()=>{message.error("非管理员！无法进入")}}><Icon type="lock" theme="twoTone" />后台管理</Menu.Item>
             }
             </Menu>
         

@@ -154,3 +154,7 @@ img.img-item{
     padding: 50px;
     color: white;
 }
+.margin-center{
+        margin:'100px  auto 0 auto';
+        text-align:'center';
+}

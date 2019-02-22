@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Header from './../components/Header';
 
-export default function HeaderWrap(WrapComponent){
+export default function HeaderWrap(WrapComponent,cur){
    
         return ( 
             <div>
-                <Header/>
+                <Header current={cur}/>
                 {WrapComponent()}
             </div>
          )

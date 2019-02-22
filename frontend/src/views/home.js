@@ -59,7 +59,7 @@ export default class Home extends Component {
               <div className="footer"  >
                 
               </div>
-        </div>)}  
+        </div>,'item_0')}  
             </div>
          )
        }
