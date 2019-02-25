@@ -42,7 +42,7 @@ router.get('/tabStatus',async function(ctx){
     if( ctx.session.user!=undefined){
     if(ctx.session.user.isAdmin===1){
         const params=ctx.query;
-        const sql =`update cartinfo set status =${params.status} where id=${params.id}`
+        const sql =`update homeinfo set status =${params.status} where id=${params.id}`
         const res=await query(sql);
         if(res){
             ctx.body=ServerSuccess(res)
@@ -75,7 +75,7 @@ router.get('/updateProduct',async(ctx)=>{
         if(ctx.session.user.isAdmin===1){
             const params =ctx.query;
             let sql;
-            sql=`update cartinfo set pingpai='${params.pingpai}' title='${params.title}'`+"`"+`desc`+"`"+`='
+            sql=`update homeinfo set pingpai='${params.pingpai}' title='${params.title}'`+"`"+`desc`+"`"+`='
             ${params.desc}' status=${params.status} price=${params.price} img='
             ${params.img}' subImgs= '${params.subImgs}' richText='${params.richText}'
             cateId=${params.cateId}

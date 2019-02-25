@@ -3,12 +3,48 @@ import {Input  ,Carousel,Radio, Row, Col} from 'antd'
 import HeaderWrap from './../components/HeaderWrap';
 import HomeList from './../containers/HomeList'
 import StoryList from './../containers/StoryList'
-
+import axios from 'axios'
 const Search = Input.Search;
 export default class Home extends Component {
       state={
-        loading:true
+        loading:true,
+        newList:[],
+        cityInfo:'杭州',
+        cityHomeList:[]
       }
+      componentDidMount(){
+        const that=this;
+        this.getCartInfo('createTime  desc',function(res){
+             if(res.data.state===0){
+                 that.setState({
+                  newList:res.data.data
+                 })
+             }
+        },8,"1=1");
+        this.getCityInfo();
+      }
+      getCityInfo(cityInfo){
+        const that=this;
+        this.getCartInfo('createTime  desc',function(res){
+          if(res.data.state===0){
+              that.setState({
+                cityHomeList:res.data.data
+              })
+          }
+     },8,"city "+" like "+"'%"+this.state.cityInfo+"%'");
+      }
+      getCartInfo(orderBy,fn,size,where){
+        axios.get("/getProduct",{
+            params:{
+                pageSize:size,
+                pageNum:1,
+                where:where,
+                orderBy:orderBy,
+            }
+        }).then((res)=>{
+           fn(res);
+        })
+    }
        render(){
         return ( 
             <div>
@@ -30,7 +66,7 @@ export default class Home extends Component {
             <p className="item-title">别住酒店，住我家</p>
             <p className="item-subtitle">莫愁前路无知己，天下谁人不识君</p>
             <ul className="home-list">
-              <HomeList list={[1,2,3,4,5,6,7,8]}/>
+              <HomeList list={this.state.newList}/>
             </ul>
             <p className="item-title">精彩旅行故事</p>
             <p className="item-subtitle">我有故事，你有酒吗？</p>
@@ -40,21 +76,29 @@ export default class Home extends Component {
             <div className="btn-wrap">
               <p className="item-title">热门旅行城市</p>
               <div className="radio-group">
-                <Radio.Group defaultValue="a" size='large' buttonStyle="solid">
-                  <Radio.Button value="a">杭州</Radio.Button>
-                  <Radio.Button value="b">上海</Radio.Button>
-                  <Radio.Button value="c">福建</Radio.Button>
-                  <Radio.Button value="d">广州</Radio.Button>
-                  <Radio.Button value="f">深圳</Radio.Button>
-                  <Radio.Button value="g">云南</Radio.Button>
-                  <Radio.Button value="h">广西</Radio.Button>
-                  <Radio.Button value="i">湖南</Radio.Button>
-                  <Radio.Button value="j">湖北</Radio.Button>
+                <Radio.Group 
+                onChange={(value)=>{
+                  this.setState({
+                    cityInfo:value.target.value
+                  },()=>{
+                    this.getCityInfo()
+                  })
+                }}
+                defaultValue="杭州" size='large' buttonStyle="solid">
+                  <Radio.Button value="杭州">杭州</Radio.Button>
+                  <Radio.Button value="上海">上海</Radio.Button>
+                  <Radio.Button value="福建">福建</Radio.Button>
+                  <Radio.Button value="广州">广州</Radio.Button>
+                  <Radio.Button value="深圳">深圳</Radio.Button>
+                  <Radio.Button value="云南">云南</Radio.Button>
+                  <Radio.Button value="广西">广西</Radio.Button>
+                  <Radio.Button value="湖南">湖南</Radio.Button>
+                  <Radio.Button value="湖北">湖北</Radio.Button>
                 </Radio.Group>
               </div>
             </div>
             <ul className="home-list">
-              <HomeList list={[1,2,3,4,5,6,7,8]}/>
+              <HomeList list={this.state.cityHomeList}/>
               </ul>
               <div className="footer"  >
                 

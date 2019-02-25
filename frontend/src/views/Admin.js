@@ -1,14 +1,17 @@
 import {Layout, Menu, Icon,Calendar,Badge} from 'antd';
 import React from 'react';
 import {Link} from 'react-router-dom'
-
+import AddHomeStay from './../components/AddHomeStay'
 import Axios from 'axios';
+import AdminHomeList from './../containers/AdminHomeList'
+
 const {  Content, Footer, Sider} = Layout;
 const SubMenu = Menu.SubMenu;
+
  export default class SiderDemo extends React.Component {
     state = {
       collapsed: false,
-      key:'4',
+      key:'1',
       cartId:undefined,
       dateList:[]
     };
@@ -36,7 +39,7 @@ render() {
             onCollapse={this.onCollapse}
           >
             <div className="logo" />
-            <Menu theme="dark" defaultSelectedKeys={['4']} mode="inline"
+            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline"
             onClick={(e)=>{
                this.setState({
                    key:e.key
@@ -69,8 +72,8 @@ render() {
           <Layout>
             <Content style={{ margin: '0 16px' }}>
                 <div style={{background:'white',minHeight:'90vh'}}>
-                {this.state.key==="1"?1:undefined}
-                {this.state.key==="2"?2:undefined}
+                {this.state.key==="1"?<AddHomeStay/>:undefined}
+                {this.state.key==="2"? <AdminHomeList/>:undefined}
                
                 {this.state.key==="3"?3:undefined}
                 {this.state.key==="4"?4:undefined}

@@ -3,10 +3,14 @@ const {query}=require('./../mysql/connect.js');
 const {ServerSuccess,ServerFail}=require('./../tools/sqlTools')
 var moment = require('moment');
 
-router.get('/addProduct', async (ctx, next) => {
+router.get('/addProduct', async (ctx) => {
+  if( ctx.session.user==undefined||ctx.session.user.isAdmin!==1){
+    ctx.body=ServerFail("用户没有权限")
+      return ;
+  }
   const params = ctx.query;
-  const sql=`insert into cartinfo values(0,
-${params.cateId},'${params.pingpai}','${params.title}','${params.desc}',${params.status},${params.price},'${params.img}','${params.subImgs}','${params.richText}',0,'${moment(new Date()).format('YYYY-MM-DD HH:mm:ss')}')`
+  const sql=`insert into homeinfo values(0,
+${params.cateId},'${params.count}','${params.title}','${params.desc}',1,${params.price},'${params.mainImg}','${params.subImgs}','${params.richText}',0,'${moment(new Date()).format('YYYY-MM-DD HH:mm:ss')}','${params.city}','${params.address}',${ctx.session.user.id})`
   const res=await query(sql);
   if(res){
     ctx.body=ServerSuccess(res)
@@ -18,12 +22,12 @@ ${params.cateId},'${params.pingpai}','${params.title}','${params.desc}',${params
 router.get('/getProduct',async(ctx)=>{
   const params =ctx.query;
   let sql;
-  sql=`select id,pingpai,title,`+"`desc`"+`,status,price,img,review from cartinfo
+  sql=`select id,count,title,`+"`desc`"+`,status,price,img,review,city from homeinfo
   where ${params.where} ${ctx.session.user===undefined||ctx.session.user.isAdmin===0?'and status = 1':''}
   order by ${params.orderBy} 
   limit ${params.pageSize*(params.pageNum-1)},${params.pageSize}`
   const res=await query(sql);
-  const total=await query(`select count(*) from cartinfo where ${params.where} 
+  const total=await query(`select count(*) from homeinfo where ${params.where} 
   ${ctx.session.user===undefined||ctx.session.user.isAdmin===0?'and status = 1':''}
   order by ${params.orderBy} `)
   if(res.length>0){
@@ -37,7 +41,7 @@ router.get('/getProduct',async(ctx)=>{
 
 router.get("/getProductById",async(ctx)=>{
   const params=ctx.query;
-  const sql=`select *  from cartinfo where id=${params.id}`;
+  const sql=`select *  from homeinfo where id=${params.id}`;
   const res=await query(sql)
   if(res!==undefined){
     ctx.body=ServerSuccess(res[0])
@@ -47,7 +51,7 @@ router.get("/getProductById",async(ctx)=>{
 })
 router.get("/addReview",async(ctx)=>{
   const params=ctx.query;
-  const sql=`update cartinfo set review=review+1  where id=${params.id}`;
+  const sql=`update homeinfo set review=review+1  where id=${params.id}`;
   const res=await query(sql)
   if(res!==undefined){
     ctx.body=ServerSuccess(res[0])

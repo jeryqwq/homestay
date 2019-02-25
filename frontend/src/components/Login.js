@@ -1,20 +1,43 @@
 import React from 'react'
 import {
-   Form, Icon, Input, Button, Checkbox,
+   Form, Icon, Input, Button, Checkbox,message
  } from 'antd';
+ import axios from 'axios'
  import {Link} from "react-router-dom"
-
+import UserState from './../mobx/userState'
+import {Redirect} from 'react-router-dom'
  import './../statics/css/login.css'
 
 class NormalLoginForm extends React.Component {
    constructor(props){
       super(props)
+    this.state={
+      isLogin:false
+    }
    }
    handleSubmit = (e) => {
      e.preventDefault();
      this.props.form.validateFields((err, values) => {
        if (!err) {
-         console.log('Received values of form: ', values);
+          axios.get('/login', {
+            params: {
+              name: values.username,
+              pwd:values.password
+            }
+          }).then((res)=>{
+           if(res.data.data.state===0){
+             message.info("登录成功！");
+             UserState.login(res.data.data.data[0]);
+            setTimeout(()=>{
+                this.setState({
+                  isLogin:true
+                })
+            },1000)
+           }else{
+             message.error("登录失败，请检查信息后重试")
+           }
+          })
+        
        }
      });
    }
@@ -24,6 +47,9 @@ class NormalLoginForm extends React.Component {
      return (
        <div className="form-wrap" style={{display:this.props.show?'inline-block':'none'}}>
        <h3 className="login-title">欢迎登录阿浪民宿</h3>
+       {
+         this.state.isLogin?<Redirect to="/"/>:undefined
+       }
          <Form onSubmit={this.handleSubmit} className="login-form">
          <Form.Item>
            {getFieldDecorator('username', {
