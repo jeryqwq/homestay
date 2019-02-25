@@ -7,12 +7,12 @@ import 'react-quill/dist/quill.snow.css'; // ES6
 
 const { TextArea } = Input;
 const Option = Select.Option;
-const provinceData = ['浙江', '杭州'];
+const provinceData = ['浙江', '杭州',"广州","福建","湖南","湖北","陕西","浙江","重庆","北京","上海","广州","深圳","南京"];
 
 class AddHomeStay extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             cities: provinceData[0],
             text:'',
             fileList:[],
