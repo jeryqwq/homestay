@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {Skeleton} from 'antd'
+import {Skeleton} from 'antd';
+import {Link} from 'react-router-dom'
 export default function(props){
     const [loading,setLoading]=useState(true);
     setTimeout(()=>{
@@ -9,9 +10,9 @@ export default function(props){
             props.list.map((item,index)=>
             <li key={index}>
             <Skeleton loading={loading}>
-              <img className="img-item" src={require('./../statics/images/1.jpg')}/>
+              <img className="img-item" src={item.img}/>
             <div className="item-wrap">
-                <span>查看信息</span>
+                <Link to={"/HomeStay/"+item.id}><span>查看信息</span></Link>
                 <span>查看房主</span>
             </div>
             <div className="item-info">

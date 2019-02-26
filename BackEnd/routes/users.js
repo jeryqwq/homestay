@@ -20,7 +20,6 @@ router.get('/register',async function (ctx) {
 
 router.get('/autoLogin', function (ctx) {
   if( ctx.session.user!=undefined){
-    
     ctx.body={data:ServerSuccess(ctx.session.user)};
   }else{
     ctx.body={data:ServerFail("session过期或者不存在")}
@@ -34,8 +33,35 @@ router.get('/logout', function (ctx) {
     ctx.body={data:ServerFail("注销失败")}
   }
 })
-router.get('/bar', function (ctx, next) {
-  ctx.body = 'this is a users/bar response'
+router.get('/addOrder',async function (ctx) {
+  if( ctx.session.user==undefined){
+    ctx.body={data:ServerFail("未登录")}
+    return;
+  }
+ else{
+  const params=ctx.query;
+  const sql =` insert into `+"`"+'order'+"`"+` values(0,'${params.homeId}','${params.userId}','${params.other}','${params.startTime}','${params.endTime}')`
+  const res=await query(sql);
+  ctx.body=ServerSuccess(res);
+ }
 })
-
+router.get("/getOrders",async function(ctx){
+  if( ctx.session.user==undefined){
+    ctx.body={data:ServerFail("未登录")}
+    return;
+  }
+  const sql ="select o.id as orderId, title,img,startTime,endTime,other from `order` o ,homeinfo h where  o.homeId=h.id  and userId= "+ctx.session.user.id
+  const res=await query(sql);
+  ctx.body=ServerSuccess(res);
+})
+router.get("/delOrder",async function(ctx){
+  if( ctx.session.user==undefined){
+    ctx.body={data:ServerFail("未登录")}
+    return;
+  }
+  const params=ctx.query;
+  const sql =`delete from `+"`"+'order'+"`"+ `where id= ${params.id}`
+  const res=await query(sql);
+  ctx.body=ServerSuccess(res);
+})
 module.exports = router

@@ -60,7 +60,7 @@ render() {
               </SubMenu>
               <Menu.Item key="3">
               <Icon type="schedule" />
-                <span>我的预约</span>
+                <span>民宿预约</span>
               </Menu.Item>
               <Menu.Item key="4">
               <Icon type="solution" />
@@ -73,15 +73,13 @@ render() {
             <Content style={{ margin: '0 16px' }}>
                 <div style={{background:'white',minHeight:'90vh'}}>
                 {this.state.key==="1"?<AddHomeStay/>:undefined}
-                {this.state.key==="2"? <AdminHomeList/>:undefined}
-               
+                {this.state.key==="2"?<AdminHomeList/>:undefined}
                 {this.state.key==="3"?3:undefined}
                 {this.state.key==="4"?4:undefined}
                 {this.state.key==="5"?5:undefined}
                 </div>
             </Content>
             {/* <Footer style={{ textAlign: 'center' }}>
-              LookCart看车网 ©2018 Created by LineWell UED
             </Footer> */}
           </Layout>
         </Layout>

@@ -126,7 +126,7 @@ class Header extends React.Component{
           
             <Col span={12}>
               {
-                  userState.user.isAdmin?<p  style={{cursor:'pointer',color:'blue'}} onClick={()=>{
+                  userState.user.isAdmin===0?<p  style={{cursor:'pointer',color:'blue'}} onClick={()=>{
                       message.info("请联系管理员，申请通过后即可上架您的房源信息！")
                   }} >点击成为房东</p>:<DescriptionItem title="信息" content="您已经是房东了，请上架您的房源信息" />
               }
