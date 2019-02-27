@@ -1,6 +1,7 @@
 import React from 'react';
 import {Skeleton,message,Pagination} from 'antd'
 import axios from 'axios'
+import Header from './../components/Header'
 import userState from '././../mobx/userState';
 export default class AdminHomeList extends React.Component{
         state={

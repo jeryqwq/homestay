@@ -56,6 +56,33 @@ router.get('/tabStatus',async function(ctx){
     ctx.body=ServerFail("用户未登录")
 }
 })
+router.get("/adminOrders",async function(ctx){
+    if( ctx.session.user!=undefined){
+        if(ctx.session.user.isAdmin===1){
+            const sql =`select o.id as id,title,homeId,userId,other,startTime,endTime,ostatus,img from `+"`order`"+` o,homeinfo h  where o.homeId=h.id and h.uId=${ctx.session.user.id}`
+            const res=await query(sql);
+            ctx.body=ServerSuccess(res);
+        }else{
+            ctx.body=ServerFail("您没有权限操作")
+           }
+    }else{
+        ctx.body=ServerFail("用户未登录")
+    }
+})
+router.get("/allowOrders",async function(ctx){
+    if( ctx.session.user!=undefined){
+        if(ctx.session.user.isAdmin===1){
+            const params=ctx.query;
+            const sql =`update `+"`order`"+` set ostatus=1 where id=${params.id} `
+            const res=await query(sql);
+            ctx.body=ServerSuccess(res);
+        }else{
+            ctx.body=ServerFail("您没有权限操作")
+           }
+    }else{
+        ctx.body=ServerFail("用户未登录")
+    }
+})
 router.get("/delUser",async function(ctx){
     if( ctx.session.user!=undefined){
         if(ctx.session.user.isAdmin===1){
@@ -94,4 +121,17 @@ router.get('/updateProduct',async(ctx)=>{
         ctx.body=ServerFail("用户未登录");
     }
   })
+  router.get("/getAllComment",async function(ctx){
+    if( ctx.session.user!=undefined){
+        if(ctx.session.user.isAdmin===1){
+            const sql =`select title,c.id as id,homeId,`+"`starts`"+`,content,cdesc,fromName from `+"`comment`"+` c,homeinfo h  where c.homeId=h.id and h.uId=${ctx.session.user.id} `
+            const res=await query(sql);
+            ctx.body=ServerSuccess(res);
+        }else{
+            ctx.body=ServerFail("您没有权限操作")
+           }
+    }else{
+        ctx.body=ServerFail("用户未登录")
+    }
+})
   module.exports = router

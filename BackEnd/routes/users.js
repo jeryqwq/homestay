@@ -1,7 +1,7 @@
 const router = require('koa-router')();
 const {query}=require('./../mysql/connect.js');
 const {ServerSuccess,ServerFail}=require('./../tools/sqlTools')
-
+var moment = require('moment');
 router.get('/login',async function (ctx) {
   const res=await  query(`SELECT * FROM user where name='${ctx.query.name}' and pwd='${ctx.query.pwd}'`)
   if(res.length>0){
@@ -40,7 +40,7 @@ router.get('/addOrder',async function (ctx) {
   }
  else{
   const params=ctx.query;
-  const sql =` insert into `+"`"+'order'+"`"+` values(0,'${params.homeId}','${params.userId}','${params.other}','${params.startTime}','${params.endTime}')`
+  const sql =` insert into `+"`"+'order'+"`"+` values(0,'${params.homeId}','${params.userId}','${params.other}','${params.startTime}','${params.endTime}',0)`
   const res=await query(sql);
   ctx.body=ServerSuccess(res);
  }
@@ -50,7 +50,7 @@ router.get("/getOrders",async function(ctx){
     ctx.body={data:ServerFail("未登录")}
     return;
   }
-  const sql ="select o.id as orderId, title,img,startTime,endTime,other from `order` o ,homeinfo h where  o.homeId=h.id  and userId= "+ctx.session.user.id
+  const sql ="select o.id as orderId,homeId, title,img,startTime,endTime,other,ostatus from `order` o ,homeinfo h where  o.homeId=h.id  and userId= "+ctx.session.user.id
   const res=await query(sql);
   ctx.body=ServerSuccess(res);
 })
@@ -61,6 +61,16 @@ router.get("/delOrder",async function(ctx){
   }
   const params=ctx.query;
   const sql =`delete from `+"`"+'order'+"`"+ `where id= ${params.id}`
+  const res=await query(sql);
+  ctx.body=ServerSuccess(res);
+})
+router.get("/addComment",async function(ctx){
+  if( ctx.session.user==undefined){
+    ctx.body=ServerFail("未登录")
+    return;
+  }
+  const params=ctx.query;
+  const sql =`insert into comment values(0,${params.homeId},${params.starts},'${params.content}','${params.cdesc}','${params.fromName}','${moment(new Date()).format('YYYY-MM-DD HH:mm:ss')}')`
   const res=await query(sql);
   ctx.body=ServerSuccess(res);
 })

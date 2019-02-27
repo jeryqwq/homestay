@@ -1,5 +1,5 @@
 import React from 'react';
-import {Icon,DatePicker,Button,Input, message} from 'antd'
+import {Icon,DatePicker,Button,Input, message,Rate} from 'antd'
  import "./../statics/css/product.css"
  import moment from 'moment'
  import axios from 'axios';
@@ -17,7 +17,8 @@ class HomeStay extends React.Component {
         Home:{},
         startTime:undefined,
         endTime:undefined,
-        other:''
+        other:'',
+        isOrder:false
         }
     }
     componentDidMount(){
@@ -107,7 +108,7 @@ class HomeStay extends React.Component {
            <div className="content-wrap-right">
                 <div className="right-inner">
                 <p className="price">￥{Home.price}/每晚</p>
-                <p className="starts">五星*25</p>
+                <p className="starts"><Rate value={5} />*25</p>
                 <br/>
                 <p className="starts">地址:{Home.address}</p>
           <br/>
@@ -139,6 +140,9 @@ class HomeStay extends React.Component {
               this.addOrder();
           }}
           >预订</Button>
+          <div className="comments">
+
+          </div>
                 </div>
            </div>
         </div>)

@@ -4,6 +4,7 @@ import HeaderWrap from './../components/HeaderWrap'
 import axios from 'axios'
 import moment from 'moment';
 import {Link} from 'react-router-dom'
+import UserState from './../mobx/userState'
 const Option = Select.Option;
 const desc = ['极差', '差', '一般', '好', '非常好'];
 const often=["体验极好","环境不错","有厨房","支持带孩子去","可以带狗狗","适合一家子","交通方便","有地铁","娱乐设施齐全"
@@ -17,7 +18,9 @@ class MyStatus extends React.Component {
           orderList:[],
           visible:false,
           currentId:0,
-          starts:5
+          starts:5,
+          content:'',
+          cdesc:[]
          };
     }
     componentDidMount(){
@@ -30,6 +33,25 @@ class MyStatus extends React.Component {
             orderList:res.data.data
           })
         }
+      })
+    }
+    comment(){
+      axios.get('/addComment',{
+        params:{
+          homeId:this.state.currentId,
+          starts:this.state.starts,
+          content:this.state.content,
+          cdesc:this.state.cdesc.join(","),
+          fromName:UserState.user.name
+        }
+      }).then((res)=>{
+       if(res.data.state===0){
+         message.info('评论成功！');
+         this.setState({
+           cdesc:[],
+           content:''
+         })
+       }
       })
     }
     delOrder(id){
@@ -52,7 +74,7 @@ class MyStatus extends React.Component {
             title: '民宿',
             dataIndex:'title',
             key: 'title',
-            render: (text,record) =><Link key={record.orderId} to={"/HomeStay/"+record.orderId}>{record.title}</Link>,
+            render: (text,record) =><Link key={record.orderId} to={"/HomeStay/"+record.homeId}>{record.title}</Link>,
           }, {
             title: '开始时间',
             dataIndex: 'startTime',
@@ -85,13 +107,20 @@ class MyStatus extends React.Component {
             title: '其他备注',
             dataIndex: 'other',
             key: 'other',
-          }, {
+          }, 
+          {
+            title: '状态',
+            dataIndex: 'ostatus',
+            key: 'ostatus',
+            render:ostatus=>ostatus===0?<Tag color="yellow"  title="等待房东确认">等待房东确认</Tag>:<Tag color="green"  title="等待房东确认">房东已同意</Tag>
+          }, 
+          {
             title: '操作',
             key: 'action',
             render: (text, record) => (
               <span>
                 {
-                   moment(record.endTime).endOf('day')>moment().endOf('day')? <Tag color='gray'>时间未到,无法评论</Tag>: <Tag color='green'
+                   moment(record.endTime).endOf('day')>moment().endOf('day')||record.ostatus===0? <Tag color='gray'>当前无法评论</Tag>: <Tag color='green'
                    onClick={()=>{
                     this.setState({
                       currentId:record.orderId,
@@ -102,9 +131,11 @@ class MyStatus extends React.Component {
                   
                 }
                 <Divider type="vertical" />
-                <a onClick={()=>{
+               {
+                 record.ostatus===0? <a onClick={()=>{
                   this.delOrder(record.orderId)
-                }}>取消预订</a>
+                }}>取消预订</a>:"已同意"
+               }
               </span>
             ),
           }];
@@ -117,7 +148,7 @@ class MyStatus extends React.Component {
                     title="评论该民宿"
                     visible={this.state.visible}
                     onOk={()=>{
-
+                      this.comment()
                     }}
                     onCancel={()=>this.setState({visible:false})}
                 >
@@ -132,7 +163,7 @@ class MyStatus extends React.Component {
                 mode="tags"
                 placeholder="请选择一些描述词"
                 defaultValue={[]}
-                onChange={(val)=>{console.log(val)}}
+                onChange={(val)=>{this.setState({cdesc:val})}}
                 style={{ width: '100%' }}
                 >
                   {
@@ -144,7 +175,11 @@ class MyStatus extends React.Component {
                 <br/>
              
                 <br/>
-                <Input.TextArea placeholder="请输入评论内容！"/>
+                <Input.TextArea placeholder="请输入评论内容！" onChange={(event)=>{
+                  this.setState({
+                    content:event.target.value
+                  })
+                }}/>
                 </Modal>
                 </div>
             ,"item_3")

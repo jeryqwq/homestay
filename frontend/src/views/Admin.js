@@ -4,7 +4,8 @@ import {Link} from 'react-router-dom'
 import AddHomeStay from './../components/AddHomeStay'
 import Axios from 'axios';
 import AdminHomeList from './../containers/AdminHomeList'
-
+import AdminOrder from './../components/AdminOrder'
+import AdminComment from './../components/AdminComment'
 const {  Content, Footer, Sider} = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -74,8 +75,8 @@ render() {
                 <div style={{background:'white',minHeight:'90vh'}}>
                 {this.state.key==="1"?<AddHomeStay/>:undefined}
                 {this.state.key==="2"?<AdminHomeList/>:undefined}
-                {this.state.key==="3"?3:undefined}
-                {this.state.key==="4"?4:undefined}
+                {this.state.key==="3"?<AdminOrder/>:undefined}
+                {this.state.key==="4"?<AdminComment/>:undefined}
                 {this.state.key==="5"?5:undefined}
                 </div>
             </Content>
