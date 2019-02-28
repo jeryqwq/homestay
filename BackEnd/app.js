@@ -10,6 +10,7 @@ const koaBody = require("koa-body")
 const static = require('koa-static')
 const path = require('path')
 
+const story=require('./routes/story')
 const index = require('./routes/index')
 const users = require('./routes/users')
 const category=require('./routes/category')
@@ -61,7 +62,6 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
-
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
@@ -69,6 +69,7 @@ app.use(category.routes(), category.allowedMethods())
 app.use(fileupload.routes(), fileupload.allowedMethods())
 app.use(product.routes(), product.allowedMethods())
 app.use(admin.routes(),admin.allowedMethods())
+app.use(story.routes(),story.allowedMethods())
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)

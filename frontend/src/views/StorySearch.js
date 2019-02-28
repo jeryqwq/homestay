@@ -1,7 +1,8 @@
 import React from 'react';
-import {Select,Input,Pagination} from 'antd';
+import {Select,Input,Pagination,message} from 'antd';
 import HeaderWrap from './../components/HeaderWrap'
 import StoryList from './../containers/StoryList'
+import Axios from 'axios';
 
 const Option = Select.Option;
 
@@ -9,49 +10,56 @@ class StorySearch extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            
+            pageNum:1,
+            storyList:[],
+            orderBy:'wTime',
+            total:0,
+            pageSize:8,
+            value:''
         }
+    }
+    componentDidMount(){
+        this.getDate()
+    }
+    getDate(){
+        Axios.get("/selectStory",{
+            params:{
+                pageSize:this.state.pageSize,
+                pageNum:this.state.pageNum,
+                where:" title like "+"'%"+this.state.value+"%'",
+                orderBy:this.state.orderBy +" desc"
+            }
+        }).then((res)=>{
+             if(res.data.state===0){
+                this.setState({
+                    storyList:res.data.data,
+                    total:res.data.total
+                })
+            }else{
+                message.info("没查到任何信息，切换写查询方式吧")
+            }
+        })
     }
     render() { 
         return ( HeaderWrap(()=>
         <div style={searchWrap}>
-             <Select onChange={(val)=>{
-               this.setState({
-                   key:val.key
-               })
-           }}
-           labelInValue defaultValue={{ key: 'global' }} style={{ width: 120 }} >
-                <Option value="global">全局匹配</Option>
-                <Option value="title">车辆名称</Option>
-                <Option value="pingpai">车辆品牌</Option>
-                <Option value="desc">车辆描述</Option>
-            </Select>
-            <Input.Search onChange={(event)=>{
-                    console.log(event.target.value)
+         <Input.Search onChange={(event)=>{
                     this.setState({
                         value:event.target.value,
-                        pageNum:1
+                        pageNum:1,
+                        key:'title'
                     })
                 }} enterButton={true}
                 onSearch={()=>{
-                    this.getCarts()
+                    this.getDate()
                 }}
                 style={{width:200,marginLeft:50}} placeholder="请输入关键词" />
-                 <span style={{margin:"0 20px"}}>地区:</span><Select onChange={(val)=>{
-               this.setState({
-                   key:val.key
-               })
-           }}
-           labelInValue defaultValue={{key:'global'}} style={{width:120}}>
-                <Option value="global">福建</Option>
-                <Option value="title">陕西</Option>
-                <Option value="pingpai">车辆品牌</Option>
-                <Option value="desc">车辆描述</Option>
-            </Select>
             <ul className="home-list" style={searchWrap}>
-              <StoryList list={[1,2,3,4,5,6,7,8]}/>
+              <StoryList list={this.state.storyList}/>
             </ul>
-            <Pagination  onChange={(val)=>{console.log(val)}} defaultCurrent={1} total={500} />,
+            <Pagination  onChange={(val)=>{this.setState({pageNum:val},()=>{
+                this.getDate();
+            })}} defaultCurrent={1} total={this.state.total} />
 
         </div>,'item_2'
         ));

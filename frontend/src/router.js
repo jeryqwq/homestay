@@ -7,6 +7,8 @@ import StorySearch from './views/StorySearch'
 import MyStatus from './views/MyStatus'
 import Admin from './views/Admin'
 import HomeStay from './views/HomeStay'
+import WhiteStory from './views/WriteStory'
+import Story from './views/Story'
 const AppRouter = () => (
        <Router>
        <span>
@@ -17,6 +19,8 @@ const AppRouter = () => (
           <Route path="/MyStatus" component={MyStatus}/>
           <Route path="/Admin" component={Admin}/>
           <Route path="/HomeStay/:id" component={HomeStay}/>
+          <Route path="/writeStory/:id" component={WhiteStory}/>
+          <Route path="/story/:id" component={Story}/>
        </span>
     </Router>  );
   

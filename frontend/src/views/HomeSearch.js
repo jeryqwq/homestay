@@ -15,8 +15,6 @@ class HomeSearch extends React.Component {
         this.state = {
             key:'globel',
             cateId:0,
-            startTime:{},
-            endTime:{},
             value:'1',
             pageSize:8,
             pageNum:1,

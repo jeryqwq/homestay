@@ -59,5 +59,14 @@ router.get("/addReview",async(ctx)=>{
     ctx.body=ServerFail("执行失败")
   }
 })
-
+router.get("/getCommentsById",async(ctx)=>{
+  const params =ctx.query;
+  const sql=`select * from comment where homeId=${params.id}`;
+  const res=await query(sql)
+  if(res!==undefined){
+    ctx.body=ServerSuccess(res)
+  }else{
+    ctx.body=ServerFail("执行失败")
+  }
+})
 module.exports = router

@@ -32,6 +32,8 @@ class MyStatus extends React.Component {
           this.setState({
             orderList:res.data.data
           })
+        }else{
+          message.error("请登录")
         }
       })
     }
@@ -123,7 +125,7 @@ class MyStatus extends React.Component {
                    moment(record.endTime).endOf('day')>moment().endOf('day')||record.ostatus===0? <Tag color='gray'>当前无法评论</Tag>: <Tag color='green'
                    onClick={()=>{
                     this.setState({
-                      currentId:record.orderId,
+                      currentId:record.homeId,
                       visible:true
                     })
                    }}
@@ -134,7 +136,7 @@ class MyStatus extends React.Component {
                {
                  record.ostatus===0? <a onClick={()=>{
                   this.delOrder(record.orderId)
-                }}>取消预订</a>:"已同意"
+                }}>取消预订</a>:<Link to={"/writeStory/"+record.homeId}><Tag color="green" >我要写故事</Tag></Link>
                }
               </span>
             ),

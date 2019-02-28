@@ -1,5 +1,7 @@
 import React,{useState} from 'react'
 import {Icon,Skeleton} from 'antd'
+import {Link} from 'react-router-dom';
+import moment from 'moment';
 export default function(props){
     const [loading,setLoading]=useState(true);
     setTimeout(()=>{
@@ -9,14 +11,14 @@ export default function(props){
             props.list.map((item,index)=>
             <li key={index}>
             <Skeleton loading={loading}>
-            <img className="img-item" src={require('./../statics/images/1.jpg')}/>
+            <img className="img-item" src={item.imgs.split(',')[0]}/>
             <div className="item-wrap">
-                <span>查看故事</span>
-                <span>查看房源</span>
+                <Link to={"/story/"+item.id}><span>查看故事</span></Link>
+                <Link to={"/HomeStay/"+item.homeId}><span>查看房源</span></Link>
             </div>
             <div className="item-info">
-                <div className="story-info">房源厦门在鬧中取靜的「家」，感受廈門的美好和治癒在鬧中取靜的「家」，感受廈門的美好和治癒</div>
-               <div className="icon"><Icon type="eye" />532  <Icon type="like" />6333<Icon type="message" />620</div>
+                <div className="story-info">{item.title}</div>
+                创建时间:{moment(item.wTime).format("YYYY-MM-DD HH:mm:ss")}
             </div>
             </Skeleton>
         </li>

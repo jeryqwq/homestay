@@ -10,7 +10,8 @@ export default class Home extends Component {
         loading:true,
         newList:[],
         cityInfo:'杭州',
-        cityHomeList:[]
+        cityHomeList:[],
+        storyList:[]
       }
       componentDidMount(){
         const that=this;
@@ -22,6 +23,23 @@ export default class Home extends Component {
              }
         },8,"1=1");
         this.getCityInfo();
+        this.getStoryList()
+      }
+      getStoryList(){
+        axios.get("/selectStory",{
+          params:{
+            pageSize:8,
+            pageNum:1,
+            where: "title like '%%'",
+            orderBy:"wTime desc",
+          }
+        }).then((res)=>{
+          if(res.data.state===0){
+              this.setState({
+                storyList:res.data.data
+              })
+          }
+        })
       }
       getCityInfo(cityInfo){
         const that=this;
@@ -71,7 +89,7 @@ export default class Home extends Component {
             <p className="item-title">精彩旅行故事</p>
             <p className="item-subtitle">我有故事，你有酒吗？</p>
             <ul className="home-list">
-              <StoryList list={[1,2,3,4,5,6,7,8]}/>
+              <StoryList list={this.state.storyList}/>
             </ul>
             <div className="btn-wrap">
               <p className="item-title">热门旅行城市</p>

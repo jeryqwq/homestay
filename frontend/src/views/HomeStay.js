@@ -1,5 +1,5 @@
 import React from 'react';
-import {Icon,DatePicker,Button,Input, message,Rate} from 'antd'
+import {Icon,DatePicker,Button,Input, message,Rate,Comment,Tag} from 'antd'
  import "./../statics/css/product.css"
  import moment from 'moment'
  import axios from 'axios';
@@ -9,7 +9,7 @@ import HeaderWrap from './../components/HeaderWrap'
 
 const { TextArea } = Input;
 
-class HomeStay extends React.Component {
+class HomeStay extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -18,20 +18,33 @@ class HomeStay extends React.Component {
         startTime:undefined,
         endTime:undefined,
         other:'',
-        isOrder:false
+        isOrder:false,
+        commentList:[]
         }
     }
     componentDidMount(){
         this.getHomeInfo();
-        this.addReview()
+        this.addReview();
+        this.getComment();
+    }
+    getComment(){
+        axios.get('/getCommentsById',{
+            params:{
+                id:this.props.match.params.id
+            }
+        }).then((res)=>{
+           if(res.data.state===0){
+               this.setState({
+                commentList:res.data.data
+               })
+           }
+        })
     }
     addReview(){
         axios.get("/addReview",{
             params:{
                 id:this.props.match.params.id
             }
-        }).then((res)=>{
-
         })
     }
     addOrder(){
@@ -141,7 +154,25 @@ class HomeStay extends React.Component {
           }}
           >预订</Button>
           <div className="comments">
+            <p style={{margin:'20px 10px',fontSize:20}}>当前民宿评论</p>
+           {
 
+               this.state.commentList.map((item,index)=>
+               <div key={index}>
+               {
+                   item.cdesc.split(",").map((item1,index1)=>
+                   <Tag color="green" key={index}>{item1}</Tag>)
+               }
+                   <Comment
+               actions={item.actions}
+               author={item.fromName}
+               avatar='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+               content={item.content}
+               datetime={moment(item.cTime).format('YYYY-MM-DD HH:mm:ss')}
+             />
+               </div>
+               )
+           }
           </div>
                 </div>
            </div>
